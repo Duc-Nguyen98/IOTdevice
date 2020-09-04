@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('layouts/head');  %>
+  <style>
+    .paragraph {
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: normal;
+      line-height: inherit;
+      color: #9194a1;
+    }
+
+    .main .tab {
+      width: 100%;
+      height: auto;
+    }
+
+    .main .tab-menu {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      max-width: 100%;
+      height: auto;
+      margin: 0 auto;
+      border-bottom: 1.3px solid #dbdbdb;
+      transition: all 0.3s ease;
+    }
+
+    .main .tab-menu-link {
+      position: relative;
+      overflow: hidden;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: inherit;
+      cursor: pointer;
+      width: calc(100% / 4);
+      height: auto;
+      padding: 1rem 0;
+      border-bottom: 2.5px solid transparent;
+      color: #9194a1;
+      background: #fff;
+      transition: all 0.3s ease;
+      border-color: transparent;
+      outline: none;
+    }
+
+    .main .tab-menu-link::before {
+      position: absolute;
+      content: "";
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: auto;
+      z-index: 2;
+    }
+
+    .main .tab-menu-link.active {
+      bottom: 0px;
+      z-index: 0;
+      overflow: hidden;
+      border-bottom: 2.5px solid #fa5757;
+      color: #252b46;
+      background: #fff;
+    }
+
+    .main .tab-bar {
+      padding: 2.5rem 0;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .main .tab-bar-content {
+      display: none;
+      width: 100%;
+      min-height: 10rem;
+      transition: all 0.3s ease;
+    }
+
+    .main .tab-bar-content.active {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <%- include('layouts/loader');  %>
+  <div class="my-4 page-wrapper compact-wrapper" id="pageWrapper">
+    <div class="page-body-wrapper sidebar-icon">
+      <!-- Container-fluid starts-->
+      <div class="container-fluid my-5">
+        <div class="row">
+          <div class="col-12">
+            <div class="row justify-content-md-center">
+              <div class="col-sm-5">
+                <div class="card">
+                  <h3 class="card-header"><i class="fa fa-map-marker-alt"></i> Weather Forecast Real Time
+                    <%= weatherCurrent.city %></h3>
+                  <div class="card-body">
+                    <h4 class="card-title"><i class="far fa-clock"></i> <span id="tanggal"></span></h4>
+                    <p class="card-text"><img src="http://openweathermap.org/img/w/<%= weatherCurrent.icon %>.png" style="width: 100px;" alt="Image">
+                      <span style="font-size: 40px;font-weight: bold;"><%= helper.convertKtoC(weatherCurrent.temperature)%>°C</span>
+                    </p>
+                    <h5 class="card-text">Feels like <%= helper.convertKtoC(weatherCurrent.feelLike) %>°C,
+                      <%= weatherCurrent.description%>
+                    </h5>
+                    <div class="row mt-4">
+                      <h6 class="col-3"><i class="fa fa-paper-plane"></i> <%= weatherCurrent.wind%>m/s NW</h6>
+                      <h6 class="col-3"><i class="fa fa-compress-alt"></i> <%= weatherCurrent.pressure%> hPa</h6>
+                      <h6 class="col-3">Humidity: <%= weatherCurrent.humidity%>%</h6>
+                      <h6 class="col-3">Visibility: <%= weatherCurrent.visibility%>km</h6>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- tab chartjs -->
+                <div class="card">
+                  <main class="main">
+                    <div class="container">
+                      <div class="tab">
+                        <div class="tab-menu">
+                          <button class="tab-menu-link active" data-content="first">
+                          <span data-title="first">Temperature Chart</span>
+                        </button>
+                          <button class="tab-menu-link" data-content="second">
+                          <span data-title="second">Humidity Chart</span>
+                        </button>
+                        </div>
+                        <div class="tab-bar">
+                          <div class="tab-bar-content active" id="first">
+                            <div class="texts">
+                              <canvas id="myChartTemperature" width="400" height="400"></canvas>
+                            </div>
+                          </div>
+                          <div class="tab-bar-content" id="second">
+                            <div class="texts">
+                              <canvas id="myChartHumidity" width="400" height="400"></canvas>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </main>
+                </div>
+                <!-- <button id="renderBtn">
+                  Render
+              </button> -->
+              </div>
+              <div class="col-sm-5 ">
+                <div class="card">
+                  <div class="card-header">
+                    <h4><i class="fas fa-code-branch"></i> Form Set Data</h4>
+                    <span><h6> Use this form to submit the data you want to configure</h6></span>
+                  </div>
+                  <form class="theme-form" method="POST" action="/setData">
+                    <div class="card-body">
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-6">
+                            <h5><label class="col-form-label pt-0" for="humidityLower">Humidity Lower</label></h5>
+                            <input class="form-control" id="temperature" type="number" value="0" name="humidityLower"  min="0" max="50">
+                          </div>
+                          <div class="col-6">
+                            <h5><label class="col-form-label pt-0" for="humidityHigh">Humidity High</label></h5>
+                            <input class="form-control" id="tmidity" type="number" value="0" name="humidityHigh"  min="0" max="50">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <div class="form-group">
+                          <h5><label for="hour" class="col-form-label">Select Hours</label></h5>
+                          <input type="text" class="form-control" name="fhour" id="hour">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-footer">
+                      <div class="row">
+                        <div class="col-6">
+                          <label class="switch">
+                            <input type="checkbox" id="togBtn">
+                            <div class="slider round"></div>
+                          <input type="hidden" id="custId" name="custId" >
+                          </label>
+                        </div>
+                        <div class="col-6">
+                          <button class="btn btn-lg btn-primary">Set Data</button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="accordion js-accordion">
+                  <div class="card">
+                    <div class="card-header">
+                      <h4><i class="fas fa-calendar-day"></i> 8-day Forecast</h4>
+                    </div>
+                    <% for(let i = 0;i<weatherDaily.dailyLength;i++){ %>
+                    <div class="card mb-0">
+                      <div class="accordion__item js-accordion-item">
+                        <div class="accordion-header js-accordion-header">
+                          <div class="row ">
+                            <h5 class="col-3 my-3 text-center">
+                              <%=helper.timeConverter(weatherDaily.weather.daily[i].dt) %></h5>
+                            <h5 class="col-4 text-center">
+                              <img src="http://openweathermap.org/img/w/<%= weatherDaily.weather.daily[i].weather[0].icon%>.png" style="width: 65px;height: 65px;" alt="Image"><%= helper.convertKtoC(weatherDaily.weather.daily[i].temp.day)%>/<%= helper.convertKtoC(weatherDaily.weather.daily[i].temp.max)%>°C</h5>
+                            <h5 class="col-4 my-3 text-center">
+                              <%= weatherDaily.weather.daily[i].weather[0].description %>
+                            </h5>
+                            <h5 class="col-1 text-right my-3"><i class="fas fa-1x fa-plus "></i></h5>
+                          </div>
+                        </div>
+                        <div class="accordion-body js-accordion-body">
+                          <div class="accordion-body__contents">
+                            <div class="row text-center">
+                              <h6 class="col-3"></h6>
+                              <h6 class="col-2">Morning</h6>
+                              <h6 class="col-2">Afternoon</h6>
+                              <h6 class="col-2">Evening</h6>
+                              <h6 class="col-2">Night</h6>
+                            </div>
+                            <div class="row text-center">
+                              <h6 class="col-3">TEMPERATURE</h6>
+                              <h6 class="col-2"><%= helper.convertKtoC(weatherDaily.weather.daily[i].temp.morn)%>°C</h6>
+                              <h6 class="col-2"><%= helper.convertKtoC(weatherDaily.weather.daily[i].temp.day)%>°C</h6>
+                              <h6 class="col-2"><%= helper.convertKtoC(weatherDaily.weather.daily[i].temp.eve)%>°C</h6>
+                              <h6 class="col-2"><%= helper.convertKtoC(weatherDaily.weather.daily[i].temp.night)%>°C
+                              </h6>
+                            </div>
+                            <div class="row text-center">
+                              <h6 class="col-3">FEELS LIKE</h6>
+                              <h6 class="col-2">
+                                <%= helper.convertKtoC(weatherDaily.weather.daily[i].feels_like.morn)%>°C
+                              </h6>
+                              <h6 class="col-2"><%= helper.convertKtoC(weatherDaily.weather.daily[i].feels_like.day)%>°C
+                              </h6>
+                              <h6 class="col-2"><%= helper.convertKtoC(weatherDaily.weather.daily[i].feels_like.eve)%>°C
+                              </h6>
+                              <h6 class="col-2">
+                                <%= helper.convertKtoC(weatherDaily.weather.daily[i].feels_like.night)%>°C
+                              </h6>
+                            </div>
+                          </div>
+                        </div><!-- end of accordion body -->
+                      </div><!-- end of accordion item -->
+                    </div>
+                    <% } %>
+                  </div>
+                </div><!-- end of accordion -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12  pt-5 pb-3">
+            <!-- footer -->
+            <h5 class="text-secondary text-center">Copyright © 2020 - 2021 By Author Nguyen Quang Duc.</h5>
+            <!--end footer -->
+          </div>
+        </div>
+      </div>
+      <!-- Container-fluid Ends-->
+
+    </div>
+  </div>
+
+
+  <%- include('layouts/script'); %>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js"></script>
+  <!-- xử lý chart js -->
+  <script>
+    //set up datetime type realtime
+    function Tanggal() {
+      var time = new Date();
+      var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      var day = days[time.getDay()];
+      var date = time.getDate();
+      var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+      var month = months[time.getMonth()];
+      var year = time.getFullYear();
+      var hours = time.getHours();
+      var minut = time.getMinutes();
+      var second = time.getSeconds();
+      if (date < 10) { date = `0${date}` }
+      if (hours < 10) { hours = `0${hours}` }
+      if (minut < 10) { minut = `0${minut}` }
+
+      var tam = document.getElementById("tanggal");
+      tam.textContent = `${hours}:${minut}, ${day}, ${month} ${date}, ${year}`;
+      // 2:13pm, Tuesday, September 1, 2020
+      setTimeout(Tanggal, 1000);
+    }
+    Tanggal();
+    //set up accordion 
+    var accordion = (function () {
+
+      var $accordion = $('.js-accordion');
+      var $accordion_header = $accordion.find('.js-accordion-header');
+      var $accordion_item = $('.js-accordion-item');
+
+      // default settings 
+      var settings = {
+        // animation speed
+        speed: 400,
+
+        // close all other accordion items if true
+        oneOpen: false
+      };
+
+      return {
+        // pass configurable object literal
+        init: function ($settings) {
+          $accordion_header.on('click', function () {
+            accordion.toggle($(this));
+          });
+
+          $.extend(settings, $settings);
+
+          // ensure only one accordion is active if oneOpen is true
+          if (settings.oneOpen && $('.js-accordion-item.active').length > 1) {
+            $('.js-accordion-item.active:not(:first)').removeClass('active');
+          }
+
+          // reveal the active accordion bodies
+          $('.js-accordion-item.active').find('> .js-accordion-body').show();
+        },
+        toggle: function ($this) {
+
+          if (settings.oneOpen && $this[0] != $this.closest('.js-accordion').find('> .js-accordion-item.active > .js-accordion-header')[0]) {
+            $this.closest('.js-accordion')
+              .find('> .js-accordion-item')
+              .removeClass('active')
+              .find('.js-accordion-body')
+              .slideUp()
+          }
+
+          // show/hide the clicked accordion item
+          $this.closest('.js-accordion-item').toggleClass('active');
+          $this.next().stop().slideToggle(settings.speed);
+        }
+      }
+    })();
+    $(document).ready(function () {
+      accordion.init({ speed: 300, oneOpen: true });
+    });
+  </script>
+
+  <script>
+    // Tabs Action
+    const tabLink = document.querySelectorAll(".tab-menu-link");
+    const tabContent = document.querySelectorAll(".tab-bar-content");
+
+    tabLink.forEach((el) => {
+      el.addEventListener("click", activeTab);
+    });
+
+    function activeTab(el) {
+      const btnTarget = el.currentTarget;
+      const content = btnTarget.dataset.content;
+
+      tabContent.forEach((el) => {
+        el.classList.remove("active");
+      });
+
+      tabLink.forEach((el) => {
+        el.classList.remove("active");
+      });
+
+      document.querySelector("#" + content).classList.add("active");
+      btnTarget.classList.add("active");
+    }
+
+    //set up chartjs for humidity
+    var temperature = document.getElementById('myChartTemperature');
+    Chart.defaults.global.defaultFontSize = 16;
+
+    var myChart = new Chart(temperature, {
+      type: 'line',
+      data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+          label: 'The Temperature ',
+          data: [12, 19, 3, 5, 2, 3],
+          backgroundColor: '#FDF0ED',
+          borderColor: '#EB6E4B',
+          borderWidth: 4,
+
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        },
+        tooltips: {
+          callbacks: {
+            label: function (tooltipItem, data) {
+              var label = data.datasets[tooltipItem.datasetIndex].label || '';
+
+              if (label) {
+                label += ': ';
+              }
+              label += Math.round(tooltipItem.yLabel * 100) / 100;
+              return label + '°C';
+            }
+          }
+        }
+      }
+    });
+
+    //set up chartjs for humidity
+    var humidity = document.getElementById('myChartHumidity');
+    var myChart = new Chart(humidity, {
+      type: 'line',
+      data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+          label: 'The Humidity ',
+          data: [12, 19, 3, 5, 2, 3],
+          backgroundColor: '#F1FAF8',
+          borderColor: '#78CBBF',
+          borderWidth: 4,
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        },
+        tooltips: {
+          callbacks: {
+            label: function (tooltipItem, data) {
+              var label = data.datasets[tooltipItem.datasetIndex].label || '';
+
+              if (label) {
+                label += ': ';
+              }
+              label += Math.round(tooltipItem.yLabel * 100) / 100;
+              return label + '%';
+            }
+          }
+        }
+      }
+    });
+  </script>
+
+  <!-- xử lý date input & on-off -->
+  <script type="text/javascript">
+    $("#hour").timeDropper({
+      format: 'h : m : A',
+      meridians: false,
+      setCurrentTime: false,
+    });
+
+
+    $("#togBtn").on('change', function () {
+      let toll = $(this).is(':checked');
+      if (toll) {
+        $("#custId").attr('value', 1);
+      }
+      else {
+        $("#custId").attr('value', 0);
+      }
+    });
+
+  </script>
+</body>
+
+</html>

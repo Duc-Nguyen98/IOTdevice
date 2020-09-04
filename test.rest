@@ -1,0 +1,2 @@
+GET http://api.openweathermap.org/data/2.5/weather?q=Ha%20Noi,%20VN&appid=7cfc25c9c3ef681b0cb0b20eeb542519
+
