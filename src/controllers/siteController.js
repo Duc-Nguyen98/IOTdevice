@@ -1,10 +1,10 @@
 const request = require('request');
 require('dotenv').config()
 
-const apiKey = process.env.APIKEY;
-const lat = process.env.LAST;
-const long = process.env.LONG;
-const city = process.env.CITYNAME;
+const apiKey = '7cfc25c9c3ef681b0cb0b20eeb542519';
+const lat = 21.0245;
+const long = 105.8412;
+const city = 'Ha Noi, VN';
 // const url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`
 const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&%20exclude=hourly,daily&appid=${apiKey}`;
 
