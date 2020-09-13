@@ -4,11 +4,11 @@ const app = express();
 const PORT = process.env.PORT ||3003;
 const morgan = require('morgan');
 const ejs = require('ejs');
-const router = require('./routers/index');
+const router = require('./src/routers/');
 app.use(express.urlencoded({ extended: true })); // gọi đến thư viện body-parser
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname,  'views'));
-app.use(express.static(__dirname + '/public/'));
+app.set('views', path.join(__dirname,  'src', 'views'));
+app.use(express.static(__dirname + '/src/public/'));
 router(app)
 morgan('dev');
 
