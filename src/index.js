@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-const port = 3003;
+const PORT = process.env.PORT ||3003;
 const morgan = require('morgan');
 const ejs = require('ejs');
 const router = require('./routers/index');
@@ -13,6 +13,6 @@ router(app)
 morgan('dev');
 
 
-app.listen(port, () => console.log(`http://localhost:${port}`));
+app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
 
 
