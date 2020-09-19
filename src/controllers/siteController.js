@@ -1,6 +1,5 @@
 const request = require('request');
 require('dotenv').config()
-
 const apiKey = '7cfc25c9c3ef681b0cb0b20eeb542519';
 const lat = 21.0245;
 const long = 105.8412;
@@ -26,18 +25,31 @@ class SiteController {
                 humidity: weather.current.humidity,
                 wind: weather.current.wind_speed,
                 visibility: Math.round(weather.current.visibility).toString().slice(0, 2),
-
             }
 
             let weatherDaily = {
                 dailyLength: weather.daily.length,
                 weather: weather,
             }
+
+
+            let dataChartTemperature = {
+                type: 'line',
+                datasetsLabel: 'The Temperature',
+            }
+
+            let dataChartHumidity = {
+                type: 'line',
+                datasetsLabel: 'The Humidity',
+            }
+
             res.render('form', {
                 weatherCurrent: weatherCurrent,
                 weatherDaily: weatherDaily,
+                dataChartTemperature: dataChartTemperature,
+                dataChartHumidity: dataChartHumidity,
                 helper: require('../utils/helper'),
-                tilte:'Weather App'
+                tilte: 'Weather App'
             });
         })
     };

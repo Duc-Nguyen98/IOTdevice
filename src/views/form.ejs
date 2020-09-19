@@ -4,10 +4,10 @@
 <head>
   <%- include('layouts/head');  %>
   <style>
-    .card .card-header{
-      background:#7366ff !important;
-      border-color:#7366ff !important;
-      color:#fff !important
+    .card .card-header {
+      background: #7366ff !important;
+      border-color: #7366ff !important;
+      color: #fff !important
     }
   </style>
 </head>
@@ -21,9 +21,13 @@
         <div class="row">
           <div class="col-12">
             <div class="row justify-content-md-center">
+              <div class="col-12 text-center mb-5">
+                <h3>Weather Program Web Application</h3>
+              </div>
               <div class="col-sm-5">
                 <div class="card">
-                  <h4 class="card-header"><i class="fa fa-map-marker-alt"></i> Weather Forecast Real Time
+                  <h4 class="card-header"><i class="fa fa-map-marker-alt" style="font-size: 1.5em!important;"></i>
+                    Weather Forecast Real Time
                     <%= weatherCurrent.city %></h4>
                   <div class="card-body">
                     <h4 class="card-title"><i class="far fa-clock"></i> <span id="tanggal"></span></h4>
@@ -43,6 +47,10 @@
                 </div>
                 <!-- tab chartjs -->
                 <div class="card">
+                  <div class="card-header">
+                    <h4><i class="far fa-chart-bar" style="font-size: 1.5em!important;"></i> Temperature and humidity
+                      statistical charts</h4>
+                  </div>
                   <main class="main">
                     <div class="container">
                       <div class="tab">
@@ -57,28 +65,25 @@
                         <div class="tab-bar">
                           <div class="tab-bar-content active" id="first">
                             <div class="texts">
-                              <canvas id="myChartTemperature" width="400" height="400"></canvas>
+                              <canvas id="myChartTemperature" width="400" height="400"
+                                style="cursor: pointer;"></canvas>
                             </div>
                           </div>
                           <div class="tab-bar-content" id="second">
                             <div class="texts">
-                              <canvas id="myChartHumidity" width="400" height="400"></canvas>
+                              <canvas id="myChartHumidity" width="400" height="400" style="cursor: pointer;"></canvas>
                             </div>
                           </div>
-
                         </div>
                       </div>
                     </div>
                   </main>
                 </div>
-                <!-- <button id="renderBtn">
-                  Render
-              </button> -->
               </div>
               <div class="col-sm-5 ">
                 <div class="card">
                   <div class="card-header">
-                    <h4><i class="fas fa-code-branch"></i> Form Set Data</h4>
+                    <h4><i class="fas fa-code-branch" style="font-size: 1.5em!important;"></i> Form Set Data</h4>
                     <span><h6 class="text-white"> Use this form to submit the data you want to configure</h6></span>
                   </div>
                   <form class="theme-form" method="POST" action="/setData">
@@ -93,26 +98,36 @@
                             <h5><label class="col-form-label pt-0" for="humidityHigh">Humidity High</label></h5>
                             <input class="form-control" id="tmidity" type="number" value="0" name="humidityHigh"  min="0" max="50">
                           </div>
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <div class="form-group">
-                          <h5><label for="hour" class="col-form-label">Select Hours</label></h5>
-                          <input type="text" class="form-control" name="fhour" id="hour">
+
+
+                          <div class="col-6">
+                            <h5><label class="col-form-label pt-0" for="humidityHigh">Setup DateTime</label></h5>
+                            <input class="form-control digits" id="minMaxExample" type="text" data-position="top left" data-original-title="" title="">
+                          </div>
+
+                          <div class="col-6">
+                            <h5><label class="col-form-label pt-0" for="humidityHigh">Setup Time</label></h5>
+                            <div class="input-group clockpicker" data-placement="top" data-align="left"
+                              data-donetext="Done">
+                              <input class="form-control datetimepicker-input digits" type="text" data-target="#dt-enab-disab-date">
+                              <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                     <div class="card-footer">
                       <div class="row">
                         <div class="col-6">
-                          <label class="switch">
-                            <input type="checkbox" id="togBtn">
-                            <div class="slider round"></div>
-                          <input type="hidden" id="custId" name="custId" >
-                          </label>
+                          <div class="media-body text-left switch-lg icon-state">
+                            <label class="switch">
+                              <input type="checkbox" id="togBtn" ><span class="switch-state"></span>
+                              <input type="hidden" id="custId" name="custId" >
+                            </label>
+                          </div>
                         </div>
                         <div class="col-6">
-                          <button class="btn btn-lg btn-primary">Set Data</button>
+                          <button class="btn btn-pill btn-primary btn-xl" type="submit">Set Data</button>
                         </div>
                       </div>
                     </div>
@@ -121,24 +136,25 @@
                 <div class="accordion js-accordion">
                   <div class="card">
                     <div class="card-header">
-                      <h4><i class="fas fa-calendar-day"></i> 8-day Forecast</h4>
+                      <h4><i class="fas fa-calendar-day" style="font-size: 1.5em!important;"></i> 8-day Forecast</h4>
                     </div>
                     <% for(let i = 0;i<weatherDaily.dailyLength;i++){ %>
                     <div class="card mb-0">
                       <div class="accordion__item js-accordion-item">
                         <div class="accordion-header js-accordion-header">
                           <div class="row ">
-                            <h5 class="col-3 my-3 text-center">
+                            <h5 class="col-3 my-3 text-left">
                               <%=helper.timeConverter(weatherDaily.weather.daily[i].dt) %></h5>
-                            <h5 class="col-4 text-center">
+                            <h5 class="col-4 text-left">
                               <img src="http://openweathermap.org/img/w/<%= weatherDaily.weather.daily[i].weather[0].icon%>.png" style="width: 65px;height: 65px;" alt="Image"><%= helper.convertKtoC(weatherDaily.weather.daily[i].temp.day)%>/<%= helper.convertKtoC(weatherDaily.weather.daily[i].temp.max)%>°C</h5>
-                            <h5 class="col-4 my-3 text-center">
+                            <h5 class="col-4 my-3 text-left">
                               <%= weatherDaily.weather.daily[i].weather[0].description %>
                             </h5>
                             <h5 class="col-1 text-right my-3"><i class="fas fa-1x fa-plus "></i></h5>
                           </div>
                         </div>
                         <div class="accordion-body js-accordion-body">
+
                           <div class="accordion-body__contents">
                             <div class="row text-center">
                               <h6 class="col-3"></h6>
@@ -188,13 +204,41 @@
         </div>
       </div>
       <!-- Container-fluid Ends-->
-
     </div>
   </div>
+  <!--set up array string for Temperature chartjs -->
+  <% let arrValueData = []; %>
+  <% let arrValueDate = []; %>
+  <% let arrValueHumidity = []; %>
+  <% var time = new Date(); %>
+  <% var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]; %>
 
+  <% for(let i = 0;i<weatherDaily.dailyLength;i++){ %>
+  <% arrValueData.push(helper.convertKtoC(weatherDaily.weather.daily[i].temp.day)) %>
+  <% arrValueHumidity.push(weatherDaily.weather.daily[i].humidity) %>
+  <% arrValueDate.push(helper.dateConverter(weatherDaily.weather.daily[i].dt)) %>
+  <% } %>
+  <!--set up array string for humidity chartjs -->
 
   <%- include('layouts/script'); %>
+
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js"></script>
+
+  <script>
+    $(function () {
+      $("#datepicker").datepicker({
+        changeMonth: false,
+        changeYear: false ,
+        dateFormat: 'dd/mm/yy',
+        beforeShow: function (input, inst) {
+            var rect = input.getBoundingClientRect();
+            setTimeout(function () {
+              inst.dpDiv.css({ top: rect.top + -130, left: rect.left + 0 });
+            }, 0);
+        }
+      });
+    });
+  </script>
   <!-- xử lý chart js -->
   <script>
     //set up datetime type realtime
@@ -297,98 +341,91 @@
       document.querySelector("#" + content).classList.add("active");
       btnTarget.classList.add("active");
     }
-
-    //set up chartjs for humidity
-    var temperature = document.getElementById('myChartTemperature');
-    Chart.defaults.global.defaultFontSize = 16;
-
-    var myChart = new Chart(temperature, {
-      type: 'line',
-      data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-          label: 'The Temperature ',
-          data: [12, 19, 3, 5, 2, 3],
-          backgroundColor: '#FDF0ED',
-          borderColor: '#EB6E4B',
-          borderWidth: 4,
-
-        }]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true
-            }
-          }]
-        },
-        tooltips: {
-          callbacks: {
-            label: function (tooltipItem, data) {
-              var label = data.datasets[tooltipItem.datasetIndex].label || '';
-
-              if (label) {
-                label += ': ';
-              }
-              label += Math.round(tooltipItem.yLabel * 100) / 100;
-              return label + '°C';
-            }
-          }
-        }
-      }
-    });
-
-    //set up chartjs for humidity
-    var humidity = document.getElementById('myChartHumidity');
-    var myChart = new Chart(humidity, {
-      type: 'line',
-      data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-          label: 'The Humidity ',
-          data: [12, 19, 3, 5, 2, 3],
-          backgroundColor: '#F1FAF8',
-          borderColor: '#78CBBF',
-          borderWidth: 4,
-        }]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true
-            }
-          }]
-        },
-        tooltips: {
-          callbacks: {
-            label: function (tooltipItem, data) {
-              var label = data.datasets[tooltipItem.datasetIndex].label || '';
-
-              if (label) {
-                label += ': ';
-              }
-              label += Math.round(tooltipItem.yLabel * 100) / 100;
-              return label + '%';
-            }
-          }
-        }
-      }
-    });
   </script>
+  <script>
+    //set up chartjs for Temperature
+    async function chartjsTemperature(type, datasetsLabel) {
+      let arrValueDataC = '<%=arrValueData%>';
+      let datasetsData = arrValueDataC.split(",");
+      let arrValueDateC = '<%= arrValueDate%>'
+      let dateLabels = arrValueDateC.split(",");
+      let temperature = document.getElementById('myChartTemperature');
+      let myChart = new Chart(temperature, {
+        type: type,
+        data: {
+          labels: dateLabels,
+          datasets: [{
+            label: datasetsLabel,
+            data: datasetsData,
+            backgroundColor: '#FDF0ED',
+            borderColor: '#EB6E4B',
+            borderWidth: 4,
+          }]
+        },
+        options: {
+          responsive: true,
+          tooltips: {
+            callbacks: {
+              label: function (tooltipItem, data) {
+                var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                if (label) {
+                  label += ': ';
+                }
+                label += Math.round(tooltipItem.yLabel * 100) / 100;
+                return label + '%';
+              }
+            }
+          }
+        }
+      });
+    }
+    chartjsTemperature("<%= dataChartTemperature.type %>", "<%= dataChartTemperature.datasetsLabel %>");
+    //set up chartjs for Humidity
+    async function chartjsHumidity(type, datasetsLabel) {
+      let arrValueHumidityC = '<%=arrValueHumidity%>';
+      let datasetsData = arrValueHumidityC.split(",");
+      let arrValueDateC = '<%= arrValueDate%>'
+      let dateLabels = arrValueDateC.split(",");
+      let humidity = document.getElementById('myChartHumidity');
+      let myChart = new Chart(humidity, {
+        type: type,
+        data: {
+          labels: dateLabels,
+          datasets: [{
+            label: datasetsLabel,
+            data: datasetsData,
+            backgroundColor: '#F1FAF8',
+            borderColor: '#78CBBF',
+            borderWidth: 4,
+          }]
+        },
+        options: {
+          responsive: true,
+          tooltips: {
+            callbacks: {
+              label: function (tooltipItem, data) {
+                var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                if (label) {
+                  label += ': ';
+                }
+                label += Math.round(tooltipItem.yLabel * 100) / 100;
+                return label + '%';
+              }
+            }
+          }
+        }
+      });
+    }
+    chartjsHumidity("<%= dataChartHumidity.type %>", "<%= dataChartHumidity.datasetsLabel %>");
 
+  </script>
   <!-- xử lý date input & on-off -->
   <script type="text/javascript">
-    $("#hour").timeDropper({
-      format: 'h : m : A',
-      meridians: false,
-      setCurrentTime: false,
-    });
 
-
+    var setdata = $('#togBtn').prop('checked');
+    if (setdata == false) {
+      setdata = $("#custId").attr('value', 0);
+    }
     $("#togBtn").on('change', function () {
       let toll = $(this).is(':checked');
       if (toll) {
