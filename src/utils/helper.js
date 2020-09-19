@@ -23,7 +23,17 @@ const handleHelper = {
         let day = days[a.getDay()];
         let time = `${day}`;
         return time
-    }
+    },
+    datePickerDefault: function (UNIX_timestamp) {
+        let a = UNIX_timestamp;
+        let month = parseInt(a.getMonth()) + 1;
+        let date = a.getDate();
+        if (date < 10) { date = `0${date}` }
+        if (month < 10) { month = `0${month}` }
+        let year = new Date().getFullYear();
+        let time = `${date}/${month}/${year}`;
+        return time
+    },
 }
 
 module.exports = handleHelper;
