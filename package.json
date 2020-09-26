@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
+    "format": "prettier --single-quote --trailing-comma all --write src/**/*.{js,json,scss}",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -25,6 +26,7 @@
     "express": "^4.17.1",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.4",
+    "prettier": "^2.1.2",
     "request": "^2.88.2"
   }
 }

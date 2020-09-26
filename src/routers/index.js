@@ -1,8 +1,7 @@
 const siteRouter = require('../routers/siteRouter');
 
 function router(app) {
-    app.use('/',siteRouter);
+  app.use('/', siteRouter);
 }
-
 
 module.exports = router;
